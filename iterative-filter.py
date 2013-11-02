@@ -54,16 +54,19 @@ assert(sensor_distance([1,2,3], [1,2,3]) == 0)
 assert(sensor_distance([1,1,1,1], [0,0,0,0]) == 2)
 
 def compute_d(readings, next_r):
-    return [sensor_distance(x, next_r) / len(readings[0]) for x in readings]
+    return [sensor_distance(x, next_r)**2 / len(readings[0]) for x in readings]
 
-#assert(compute_d([[1,1,1,1]], [0,0,0,0]) == [1])
+assert(compute_d([[1,1,1,1]], [0,0,0,0]) == [1])
 assert(compute_d([[1,1,1,1]], [1,1,1,1]) == [0])
 
-def discriminant(distance, k):
-    return distance**(-k)
+def discriminant(distance):
+    if distance:
+        return distance**-1
+    else:
+        return 1000000000000000000
 
 def compute_next_w(distances, readings, next_r):
-    return [discriminant(distances[i], sensor_distance(readings[i], next_r)) for i in range(len(distances))]
+    return [discriminant(distances[i]) for i in range(len(distances))]
 
 def iterative_filter(x, n, t):
     l = 0
