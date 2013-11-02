@@ -47,14 +47,13 @@ def compute_next_r(readings, weights):
 assert(compute_next_r(intel_X, [1] * intel_N) == [19.3586, 19.6719, 19.8097])
 
 def sensor_distance(sensor_readings, next_r):
-    eucl_norm = math.sqrt(sum([(x - r)**2 for x, r in zip(sensor_readings, next_r)]))
-    return eucl_norm
+    return sum([(x - r)**2 for x, r in zip(sensor_readings, next_r)])
 
 assert(sensor_distance([1,2,3], [1,2,3]) == 0)
-assert(sensor_distance([1,1,1,1], [0,0,0,0]) == 2)
+assert(sensor_distance([1,1,1,1], [0,0,0,0]) == 4)
 
 def compute_d(readings, next_r):
-    return [sensor_distance(x, next_r)**2 / len(readings[0]) for x in readings]
+    return [sensor_distance(x, next_r) / len(readings[0]) for x in readings]
 
 assert(compute_d([[1,1,1,1]], [0,0,0,0]) == [1])
 assert(compute_d([[1,1,1,1]], [1,1,1,1]) == [0])
@@ -87,6 +86,8 @@ def iterative_filter(x, n, t):
             converged = True
     return r[l]
 
+assert(iterative_filter(intel_X, intel_N, intel_T) == [19.42, 19.4102, 19.42])
+
 if __name__ == '__main__':
     with open('datasets/intel-temp.csv') as f:
         raw = [l.rstrip().split(',') for l in f]
@@ -99,4 +100,3 @@ if __name__ == '__main__':
         print ('T: {}'.format(len(readings[0])))
         print ()
     
-        print(iterative_filter(readings, len(readings), len(readings[0])))
