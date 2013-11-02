@@ -58,35 +58,31 @@ def compute_d(readings, next_r):
 assert(compute_d([[1,1,1,1]], [0,0,0,0]) == [1])
 assert(compute_d([[1,1,1,1]], [1,1,1,1]) == [0])
 
-def discriminant(distance):
-    if distance:
-        return distance**-1
-    else:
-        return 1000000000000000000
+def compute_next_w(distances, readings, next_r, g):
+    return [g(distances[i]) for i in range(len(distances))]
 
-def compute_next_w(distances, readings, next_r):
-    return [discriminant(distances[i]) for i in range(len(distances))]
-
-def iterative_filter(x, n, t):
+def iterative_filter(x, n, t, g):
     l = 0
     w = [[1] * n]
     r = [[]]
     converged = False
     while not converged:
-        print ('round {} ===================='.format(l))
-        
         r.append(compute_next_r(x, w[l]))
-        print ('r[{}]: {}'.format(l+1, r[l+1]))
         d = compute_d(x, r[l+1])
-        w.append(compute_next_w(d, x, r[l+1]))
-        print ('w[{}]: {}'.format(l+1, [round(x, 4) for x in w[l+1]]))
+        w.append(compute_next_w(d, x, r[l+1], g))
 
         l += 1;
         if (r[l] == r[l-1]):
             converged = True
     return r[l]
 
-assert(iterative_filter(intel_X, intel_N, intel_T) == [19.42, 19.4102, 19.42])
+def reciprocal(distance):
+    if distance:
+        return distance**-1
+    else:
+        return 1000000000000000000
+
+assert(iterative_filter(intel_X, intel_N, intel_T, reciprocal) == [19.42, 19.4102, 19.42])
 
 if __name__ == '__main__':
     with open('datasets/intel-temp.csv') as f:
@@ -99,4 +95,3 @@ if __name__ == '__main__':
         print ('N: {}'.format(len(readings)))
         print ('T: {}'.format(len(readings[0])))
         print ()
-    
