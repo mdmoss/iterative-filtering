@@ -33,18 +33,12 @@ def aggregate(instant_readings, weights):
     # dot product
     top = sum([r * w for r, w in zip(instant_readings, weights)])
     bottom = sum(weights)
-    return round(top / bottom, 4)
-
-assert(aggregate([x[0] for x in intel_X], [1] * intel_N) == 19.3586)
-assert(aggregate([x[1] for x in intel_X], [1] * intel_N) == 19.6719)
-assert(aggregate([x[2] for x in intel_X], [1] * intel_N) == 19.8097)
+    return top / bottom
 
 def compute_next_r(readings, weights):
     # matrix rotation
     instant_readings = [[x[i] for x in readings] for i in range(len(readings[0]))]
     return [aggregate(r, weights) for r in instant_readings]
-
-assert(compute_next_r(intel_X, [1] * intel_N) == [19.3586, 19.6719, 19.8097])
 
 def sensor_distance(sensor_readings, next_r):
     return sum([(x - r)**2 for x, r in zip(sensor_readings, next_r)])
@@ -71,9 +65,9 @@ def iterative_filter(x, n, t, g):
         d = compute_d(x, r[l+1])
         w.append(compute_next_w(d, x, r[l+1], g))
 
-        l += 1;
         if (r[l] == r[l-1]):
             converged = True
+        l += 1;
     return r[l]
 
 def reciprocal(distance):
@@ -81,6 +75,9 @@ def reciprocal(distance):
         return distance**-1
     else:
         return 1000000000000000000
+
+def exponential(distance):
+    return math.exp(distance * -1)
 
 assert(iterative_filter(intel_X, intel_N, intel_T, reciprocal) == [19.42, 19.4102, 19.42])
 
@@ -94,4 +91,5 @@ if __name__ == '__main__':
             print (line)
         print ('N: {}'.format(len(readings)))
         print ('T: {}'.format(len(readings[0])))
-        print ()
+        print ('reciprocal: {}'.format(iterative_filter(intel_X, intel_N, intel_T, reciprocal)))
+        print ('exponential: {}'.format(iterative_filter(intel_X, intel_N, intel_T, exponential)))
