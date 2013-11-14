@@ -65,9 +65,10 @@ def iterative_filter(x, n, t, g):
         d = compute_d(x, r[l+1])
         w.append(compute_next_w(d, x, r[l+1], g))
 
-        if (r[l] == r[l-1]):
+        if [round(x, 4) for x in r[l]] == [round(y, 4) for y in r[l-1]]:
             converged = True
         l += 1;
+
     return r[l]
 
 def reciprocal(distance):
@@ -80,6 +81,9 @@ def exponential(distance):
     return math.exp(distance * -1)
 
 assert(iterative_filter(intel_X, intel_N, intel_T, reciprocal) == [19.42, 19.4102, 19.42])
+
+def iterfilter(readings, discriminant):
+    return iterative_filter(readings, len(readings), len(readings[0]), discriminant)
 
 if __name__ == '__main__':
     with open('datasets/intel-temp.csv') as f:
