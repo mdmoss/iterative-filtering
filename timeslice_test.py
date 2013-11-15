@@ -4,6 +4,8 @@ import math
 import random
 import sys
 
+import matplotlib.pyplot as pp
+
 import iterative_filter
 
 TRUTH = 0
@@ -39,3 +41,8 @@ if __name__ == '__main__':
     error_averages = [sum(x)/len(x) for x in error_calcs]
     for i in range(len(error_averages)):
         print ('{}          {}'.format(i + 1, round(error_averages[i], 2)))
+
+    slice_length = range(1, num_times + 1)    
+    
+    pp.scatter(slice_length, error_averages)
+    pp.show()
