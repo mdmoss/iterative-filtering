@@ -85,6 +85,10 @@ assert(iterative_filter(intel_X, intel_N, intel_T, reciprocal) == [19.42, 19.410
 def iterfilter(readings, discriminant):
     return iterative_filter(readings, len(readings), len(readings[0]), discriminant)
 
+def by_time(readings, discriminant):
+    sensor_readings = [[x[i] for x in readings] for i in range(len(readings[0]))]
+    return iterfilter(sensor_readings, discriminant)
+
 if __name__ == '__main__':
     with open('datasets/intel-temp.csv') as f:
         raw = [l.rstrip().split(',') for l in f]
@@ -95,5 +99,7 @@ if __name__ == '__main__':
             print (line)
         print ('N: {}'.format(len(readings)))
         print ('T: {}'.format(len(readings[0])))
-        print ('reciprocal: {}'.format(iterative_filter(intel_X, intel_N, intel_T, reciprocal)))
-        print ('exponential: {}'.format(iterative_filter(intel_X, intel_N, intel_T, exponential)))
+        result = iterative_filter(intel_X, intel_N, intel_T, reciprocal)
+        print ('reciprocal: {}'.format(result))
+        result = iterative_filter(intel_X, intel_N, intel_T, exponential)
+        print ('exponential: {}'.format(result))
