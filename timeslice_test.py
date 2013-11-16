@@ -5,11 +5,12 @@ import random
 import sys
 
 import matplotlib.pyplot as pp
+import scipy.stats as stats
 
 import iterative_filter
 
 TRUTH = 0
-VARIANCE = 1
+VARIANCE = 10
 
 def rms_error(estimates, truths):
     return math.sqrt(sum([(e - t)**2 for (e, t) in zip(estimates, truths)]) / len(estimates))
@@ -35,14 +36,24 @@ if __name__ == '__main__':
 
         for j in range(num_times):
             iterative_result = iterative_filter.by_time(readings[0:j+1], iterative_filter.exponential)
-            error = rms_error(iterative_result, [TRUTH] * len(iterative_result))
-            error_calcs[j].append(error)
+            avg_error = rms_error(iterative_result, [TRUTH] * len(iterative_result))
+            error_calcs[j].append(avg_error)
 
-    error_averages = [sum(x)/len(x) for x in error_calcs]
-    for i in range(len(error_averages)):
-        print ('{}          {}'.format(i + 1, round(error_averages[i], 2)))
+    error_bayes = [stats.bayes_mvs(x) for x in error_calcs]
+    for i in range(len(error_bayes)):
+        print ('{}          {}'.format(i + 1, round(error_bayes[i][0][0], 2)))
 
     slice_length = range(1, num_times + 1)    
-    
-    pp.scatter(slice_length, error_averages)
+  
+    print (error_bayes)
+
+    mids = [t[0][0] for t in error_bayes]
+    errors = [e[0][1][0]-m for (e, m) in zip(error_bayes, mids)]
+
+    print ('mids')
+    print (mids)
+    print ('values') 
+    print (errors)
+
+    pp.errorbar(slice_length, mids, yerr=errors)
     pp.show()
