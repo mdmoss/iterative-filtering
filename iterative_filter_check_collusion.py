@@ -120,16 +120,19 @@ def test_iterfilter(num_honest, num_skewing, num_avg, num_times, repetitions, ra
     return (recip_rms_bayes[0], expo_rms_bayes[0])
 
 if __name__ == '__main__':
-    sensors = 30
-    max_colluders = 30
-    seed = random.random()
+    sensors = 100
+    max_colluders = 10
+    times = 1
+    repeats = 100
+    num_averagers = 1
+    seed = round(random.random(), 6)
 
     values = []
     recip_results = [] 
     expo_results = []
-    for i in range(1, max_colluders + 1):
+    for i in range(num_averagers, max_colluders + 1):
         values += [i]
-        recip_res, expo_res = test_iterfilter(sensors - i, i - 1, 1, 1, 100, randseed=seed)
+        recip_res, expo_res = test_iterfilter(sensors - i, i - num_averagers, num_averagers, times, repeats, randseed=seed)
         recip_results += [recip_res]
         expo_results += [expo_res]
   
@@ -143,5 +146,6 @@ if __name__ == '__main__':
     pp.errorbar(values, expo_means, yerr=expo_errors)
     pp.xlabel('Number of Colluding Sensors')
     pp.ylabel('RMS Error')
-    pp.title('RMS Error by Number of Colluding Sensors (randseed={})'.format(seed))
+    pp.suptitle('RMS Error by Number of Colluding Sensors')
+    pp.title('sensors={}, t={}, colluder bias={}, averagers={}, repeats={}, randseed={}'.format(sensors, times, COLLUSION_VALUE, num_averagers, repeats, seed))
     pp.show()
