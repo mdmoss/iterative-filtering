@@ -69,7 +69,7 @@ def iterative_filter(x, n, t, g):
         if [round(x, 4) for x in r[l]] == [round(y, 4) for y in r[l-1]]:
             converged = True
         l += 1;
-    print (l)
+    print ('Filter completed in', l, 'rounds')
     return r[l]
 
 def reciprocal(distance):
@@ -87,7 +87,11 @@ def iterfilter(readings, discriminant):
     return iterative_filter(readings, len(readings), len(readings[0]), discriminant)
 
 if __name__ == '__main__':
-    with open('datasets/intel-temp.csv') as f:
+    if len(sys.argv) == 1:
+        data = 'datasets/intel-temp.csv'
+    else:
+        data = sys.argv[1]
+    with open(data) as f:
         raw = [l.rstrip().split(',') for l in f]
         readings = [[float(r) for r in l] for l in raw]
         
@@ -96,7 +100,7 @@ if __name__ == '__main__':
             print (line)
         print ('N: {}'.format(len(readings)))
         print ('T: {}'.format(len(readings[0])))
-        result = iterative_filter(intel_X, intel_N, intel_T, reciprocal)
+        result = iterative_filter(readings, len(readings), len(readings[0]), reciprocal)
         print ('reciprocal: {}'.format(result))
-        result = [round(x, 4) for x in iterative_filter(intel_X, intel_N, intel_T, exponential)]
+        result = [round(x, 4) for x in iterative_filter(readings, len(readings), len(readings[0]), exponential)]
         print ('exponential: {}'.format(result))
