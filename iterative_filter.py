@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import sys
 import math
 
 """
@@ -68,14 +69,14 @@ def iterative_filter(x, n, t, g):
         if [round(x, 4) for x in r[l]] == [round(y, 4) for y in r[l-1]]:
             converged = True
         l += 1;
-
+    print (l)
     return r[l]
 
 def reciprocal(distance):
     if distance:
         return distance**-1
     else:
-        return 1000000000000000000
+        return sys.maxsize
 
 def exponential(distance):
     return math.exp(distance * -1)
@@ -97,5 +98,5 @@ if __name__ == '__main__':
         print ('T: {}'.format(len(readings[0])))
         result = iterative_filter(intel_X, intel_N, intel_T, reciprocal)
         print ('reciprocal: {}'.format(result))
-        result = iterative_filter(intel_X, intel_N, intel_T, exponential)
+        result = [round(x, 4) for x in iterative_filter(intel_X, intel_N, intel_T, exponential)]
         print ('exponential: {}'.format(result))
