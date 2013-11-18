@@ -649,12 +649,13 @@ There are several possible explanations for the differences between the
 \end_layout
 
 \begin_layout Standard
-I also tried the sophisticated collusion attack, which had the expected
+I also tried the sophisticated collusion attack, which had the following
  results.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float table
+placement h
 wide false
 sideways false
 status open
@@ -818,6 +819,119 @@ exponential
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+I was interested by the final aggregate value for the exponential discriminant
+ iterative filter, because it seemed to skew less than I'd expect, hearing
+ about the weaknesses of the algorithm.
+ I wrote a tester to explore attacks against the iterative filtering algorithm
+ more thoroughly.
+ To start, I measured the error of 1000 datasets similar to the intel example,
+ with a single averaging colluder and a varying number of others skewing
+ the data.
+ The genuine readings were taken from a normal distribution around 0 with
+ variance 1.
+ The colluding sensors each reported a value with a bias of 
+\begin_inset Formula $+4$
+\end_inset
+
+, except for a final colluder that reported the average of the other readings.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/mdm/rms_by_number_of_colluding_sensors.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It seems the behavior from the Intel example is fairly typical, with the
+ exponential discriminant function yielding a result that's quite close
+ to accurate, even in the presence of colluders.
+ This behavior deteriorates sharply when the number of colluders is half
+ the number of sensors, as is intuitive.
+\end_layout
+
+\begin_layout Standard
+To establish if the patterns for breakdown were typical, I repeated the
+ experiment with 30 sensors and between 1 and 30 colluders.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/mdm/30_sensors.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From these results, it seems that 10 colluders out of 30 sensors is close
+ to the limit where the algorithm begins to fail.
+ I'm going to use that ratio to explore how the other parameters affect
+ the outome.
+ First, I checked how the number of time samples used in the algorithm affects
+ the accuracy of the result.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/mdm/vary_times.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The number of time samples used seems to have fairly little effect on the
+ accuracy.
+ I also varied the number of colluders reporting an average, to see the
+ effect on the results.
 \end_layout
 
 \end_body

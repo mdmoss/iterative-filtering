@@ -122,17 +122,17 @@ def test_iterfilter(num_honest, num_skewing, num_avg, num_times, repetitions, ra
 if __name__ == '__main__':
     sensors = 30
     colluders = 10
+    max_times = 20
     repeats = 100
-    max_averagers = 10
-    times = 1
+    num_averagers = 1
     seed = round(random.random(), 6)
 
     values = []
     recip_results = [] 
     expo_results = []
-    for i in range(1, max_averagers + 1):
+    for i in range(1, max_times + 1):
         values += [i]
-        recip_res, expo_res = test_iterfilter(sensors - colluders, colluders - i, i, times, repeats, randseed=seed)
+        recip_res, expo_res = test_iterfilter(sensors - colluders, colluders - num_averagers, num_averagers, i, repeats, randseed=seed)
         recip_results += [recip_res]
         expo_results += [expo_res]
   
@@ -144,9 +144,9 @@ if __name__ == '__main__':
 
     pp.errorbar(values, recip_means, yerr=recip_errors, label='reciprocal')
     pp.errorbar(values, expo_means, yerr=expo_errors, label='exponential')
-    pp.xlabel('Number of Averaging Colluders')
+    pp.xlabel('Number of Time Samples')
     pp.ylabel('RMS Error')
-    pp.suptitle('RMS Error by Number of Averaging Colluders')
-    pp.title('sensors={}, colluders={}, colluder bias={}, times={}, repeats={}, randseed={}'.format(sensors, colluders, COLLUSION_VALUE, times, repeats, seed))
+    pp.suptitle('RMS Error by Number of Time Samples')
+    pp.title('sensors={}, colluders={}, colluder bias={}, averagers={}, repeats={}, randseed={}'.format(sensors, colluders, COLLUSION_VALUE, num_averagers, repeats, seed))
     pp.legend(loc='upper left')
     pp.show()
