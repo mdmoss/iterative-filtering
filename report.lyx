@@ -934,5 +934,64 @@ The number of time samples used seems to have fairly little effect on the
  effect on the results.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/mdm/vary_averaging_colluders.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Finally, I varied the value of the final colluding sensor, specifically
+ to see if it had any effect on the exponential function's results.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/mdm/vary_avg.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I'm interested by how robust using an exponential discriminant seems to
+ be.
+ The estimate seems to vary a lot less than the reciprocal.
+ 
+\end_layout
+
 \end_body
 \end_document
