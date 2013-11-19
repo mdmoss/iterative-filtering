@@ -932,6 +932,9 @@ The number of time samples used seems to have fairly little effect on the
  accuracy.
  I also varied the number of colluders reporting an average, to see the
  effect on the results.
+ Keep in mind that every colluder reporting an average is one less to report
+ a more extreme value, hence the trustworthiness of the averagers decreases
+ overall.
 \end_layout
 
 \begin_layout Standard
@@ -990,7 +993,35 @@ status open
 I'm interested by how robust using an exponential discriminant seems to
  be.
  The estimate seems to vary a lot less than the reciprocal.
- 
+ At this stage, it seemed that using the exponential function prevented
+ the attacks demonstrated in the original paper.
+ To find the point where it breaks down, I ran a test with 10 sensors including
+ 3 colluders, varying the bias of the colluder's measurements.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename vary_bias.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
