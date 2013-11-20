@@ -2,73 +2,24 @@
 
 import random
 import matplotlib.pyplot as pyplot
-from numpy import array, mean, hstack, vstack, linalg, dot
-from scipy import optimize, stats
+from numpy import array, mean, vstack
+from scipy import optimize
 
-import matplotlib.pyplot as pp
 import scipy.stats as stats
-
-# Readings format: Array of sensors containing array of times
-# [[S1T1, S1T2], [S2T1, S2T2]]
-
-# Danger Will Robinson: Lack of thread safety ahead!
-_readings = []
-
-
-#def rms_error(estimates, truths):
-#    return math.sqrt(sum([(e - t) ** 2 for (e, t) in zip(estimates, truths)]) / len(estimates))
 
 
 def delta(readings):
+    """
+        `readings` is a sensor-major matrix of sensor/time readings. `readings[s,t]` is the reading of
+        sensor `s` at time `t`.
+    """
     return array([
         [mean(array(readings[i]) - array(readings[j])) for j in range(0, len(readings))]
         for i in range(0, len(readings))
     ])
 
 
-#def delta(i, j, readings):
-#    assert (len(_readings[i]) == len(_readings[j]))
-#    return sum([a - b for (a, b) in zip(_readings[i], _readings[j])]) / len(_readings[i])
-
-
-#def bias_estimate(delta_matrix):
-#    num_sensors = len(delta_matrix)
-#
-#    def d(i, j):
-#        if i < j:
-#            return -delta_matrix[i, j]
-#        else:
-#            return delta_matrix[i, j]
-#
-#    def c(k):
-#        return 2 * sum([1 / d(i, k) for i in range(num_sensors) if i != k])
-#
-#    c_vector = array([c(k) for k in range(num_sensors)] + [0])
-#
-#    def f(i, k):
-#        if i != k:
-#            return 2 / (d(i, k) ** 2)
-#        else:
-#            return sum([f(j, k) for j in range(num_sensors) if j != k])
-#
-#    def f_vector(k):
-#        return [f(i, k) for i in range(num_sensors)]
-#
-#    f_matrix = array([f_vector(k) for k in range(num_sensors)])
-#    #print("the f_matrix has shape {}".format(f_matrix.shape))
-#
-#    a_matrix = vstack((
-#        hstack((
-#            f_matrix,
-#            array([[-1]] * num_sensors)
-#        )),
-#        [1] * num_sensors + [0]
-#    ))
-#
-#    return linalg.solve(a_matrix, c_vector)[0:-1]
-
-
-def bias_estimate_2(readings):
+def bias_estimate(readings):
     """
         `readings` is a sensor-major matrix of sensor/time readings. `readings[s,t]` is the reading of
         sensor `s` at time `t`.
@@ -89,63 +40,7 @@ def bias_estimate_2(readings):
                                    x0=[0] * num_sensors,
                                    f_eqcons=constraint_function,
                                    iprint=0)
-
-    #solution = optimize.minimize(method='SLSQP',
-    #                             fun=target_function,
-    #                             x0=[0] * num_sensors,
-    #                             constraints={'type': 'eq',
-    #                                          'fun': constraint_function})
-
     return solution
-
-
-"""
-def per_sensor_bias(i, bi, j, bj):
-    return (bi - bj - delta(i, j))**2
-
-def bias_estimator(x):
-    total = 0
-    for i in range(len(x)):
-        for j in range(i):
-            total += per_sensor_bias(i, x[i], j, x[j]) 
-    return total
-
-def bias_constraint(x):
-    return sum(x)
-
-bias_constraint_dict = {
-    'type': 'eq',
-    'fun': bias_constraint,
-}
-
-def estimate(readings):
-    global _readings
-    _readings = readings 
-    res = minimize(bias_estimator, [0]*len(readings), method='SLSQP', constraints=bias_constraint_dict)
-    return res.x
-
-TRUTH = 0
-
-if __name__ == '__main__':
-    honest_sensors = 20
-    colluding_sensors = 10
-    colluder_target = 100
-    repeats = 1
-    bias_std_dev = 1
-    times = 10
-
-    for i in range(repeats):
-        honest_bias = [random.gauss(0, bias_std_dev) for x in range(honest_sensors)]
-        colluder_bias = [colluder_target] * colluding_sensors
-        honest_data = [[random.gauss(TRUTH, x) for t in range(times)] for x in honest_bias]
-        colluder_data = [[colluder_target for t in range(times)] for x in colluder_bias]
-        bias = honest_bias + colluder_bias
-        data = honest_data + colluder_data
-        estimate_bias = estimate(data)
-        print ([round(x, 4) for x in bias])
-        print ([round(x, 4) for x in estimate_bias])
-        print (rms_error(bias, estimate_bias))
-"""
 
 
 def readings(biases, variances, num_times, true_value):
@@ -175,7 +70,7 @@ if __name__ == "__main__":
     num_times = 10
     num_readings_samples = 100
     readings_samples = [readings(biases, variances, num_times, true_value) for i in range(num_readings_samples)]
-    bias_estimates = array([v for v in map(bias_estimate_2, readings_samples)])
+    bias_estimates = array([v for v in map(bias_estimate, readings_samples)])
     alpha = 0.95
     confidence_intervals = [stats.bayes_mvs(v, alpha) for v in bias_estimates.transpose()]
 
