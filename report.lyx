@@ -24,7 +24,9 @@
 \output_sync 0
 \bibtex_command default
 \index_command default
+\float_placement H
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
@@ -166,7 +168,6 @@ Using my implementation, I was able to replicate the trace given in Table
 
 \begin_layout Standard
 \begin_inset Float table
-placement h
 wide false
 sideways false
 status open
@@ -471,7 +472,6 @@ To confirm that the iterative filter I've implemented has the same behavior
 
 \begin_layout Standard
 \begin_inset Float table
-placement h
 wide false
 sideways false
 status open
@@ -655,7 +655,6 @@ I also tried the sophisticated collusion attack, which had the following
 
 \begin_layout Standard
 \begin_inset Float table
-placement h
 wide false
 sideways false
 status open
@@ -841,7 +840,6 @@ I was interested by the final aggregate value for the exponential discriminant
 
 \begin_layout Standard
 \begin_inset Float figure
-placement h
 wide false
 sideways false
 status open
@@ -876,7 +874,6 @@ To establish if the patterns for breakdown were typical, I repeated the
 
 \begin_layout Standard
 \begin_inset Float figure
-placement h
 wide false
 sideways false
 status open
@@ -907,7 +904,6 @@ From these results, it seems that 10 colluders out of 30 sensors is close
 
 \begin_layout Standard
 \begin_inset Float figure
-placement h
 wide false
 sideways false
 status open
@@ -969,7 +965,6 @@ Finally, I varied the value of the final colluding sensor, specifically
 
 \begin_layout Standard
 \begin_inset Float figure
-placement h
 wide false
 sideways false
 status open
