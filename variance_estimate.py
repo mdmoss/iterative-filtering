@@ -1,6 +1,6 @@
 __author__ = 'Pierzchalski'
 
-from numpy import array, mean
+from numpy import array, mean, vstack
 from scipy import optimize, stats
 import readings_generator
 from bias_estimate import bias_estimate
@@ -63,8 +63,8 @@ if __name__ == "__main__":
     compensated_biases = biases - array([mean(biases)] * num_sensors)
     variances = array([(num_sensors - sensor + 1) / 2 for sensor in range(num_sensors)])
     num_times = 10
-    true_value = lambda t: (t - num_times / 2) ** 2
-    num_readings = 20
+    true_value = lambda t: (t - num_times / 2) ** 4
+    num_readings = 300
     reading_sampling = [readings_generator.readings(compensated_biases, variances, num_times, true_value) for i in
                         range(num_readings)]
     bias_estimates = array([bias_estimate(r) for r in reading_sampling])
@@ -73,23 +73,19 @@ if __name__ == "__main__":
     #variance_estimates[i,s] gives the estimate of sensor s in reading i.
     #variance_estimates.transpose()[s, i] gives the same.
     variance_cis = [stats.bayes_mvs(v_est, alpha) for v_est in variance_estimates.transpose()]
-    variance_mean_cis = [m for m, v, s in variance_cis]
-    variance_mean_cntrs = [cntr for cntr, bounds in variance_mean_cis]
-    variance_mean_bounds = [bounds for cntr, bounds in variance_mean_cis]
-
-    bias_cis = [stats.bayes_mvs(b_est, alpha) for b_est in bias_estimates.transpose()]
-    bias_mean_cis = [m for m, v, s in bias_cis]
-    bias_mean_cntrs = [cntr for cntr, bounds in bias_mean_cis]
+    v_mean_cis, v_var_cis, v_std_cis = zip(*variance_cis)
+    v_mean_cntrs, v_mean_bounds = zip(*v_mean_cis)
+    v_mean_lo, v_mean_hi = zip(*v_mean_bounds)
+    v_mean_lo_diff = array(v_mean_cntrs) - array(v_mean_lo)
+    v_mean_hi_diff = array(v_mean_hi) - array(v_mean_cntrs)
 
     fig = pyplot.figure()
     axes = fig.add_subplot(1, 1, 1)
     axes.set_title('Variance Estimation')
     axes.plot(variances)
-    axes.plot(variance_mean_cntrs)
-    #axes.plot(compensated_biases)
-    #axes.plot(bias_mean_cntrs)
+    axes.errorbar(range(num_sensors), v_mean_cntrs, vstack((v_mean_lo_diff, v_mean_hi_diff)))
 
-    #axes.legend(['True', 'Estimated - Mean', 'Estimated - Standard Deviation'])
+    axes.legend(['True', 'Estimated - Mean'])
     #axes.set_ylim(ymax=3)
     axes.set_xlabel('Sensor ID')
     axes.set_ylabel('Bias')
