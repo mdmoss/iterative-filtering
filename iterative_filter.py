@@ -44,14 +44,8 @@ def compute_next_r(readings, weights):
 def sensor_distance(sensor_readings, next_r):
     return sum([(x - r)**2 for x, r in zip(sensor_readings, next_r)])
 
-assert(sensor_distance([1,2,3], [1,2,3]) == 0)
-assert(sensor_distance([1,1,1,1], [0,0,0,0]) == 4)
-
 def compute_d(readings, next_r):
     return [sensor_distance(x, next_r) / len(readings[0]) for x in readings]
-
-assert(compute_d([[1,1,1,1]], [0,0,0,0]) == [1])
-assert(compute_d([[1,1,1,1]], [1,1,1,1]) == [0])
 
 def compute_next_w(distances, readings, next_r, g):
     return [g(distances[i]) for i in range(len(distances))]
@@ -81,12 +75,20 @@ def reciprocal(distance):
 def exponential(distance):
     return math.exp(distance * -1)
 
-assert(iterative_filter(intel_X, intel_N, intel_T, reciprocal) == [19.42, 19.4102, 19.42])
 
 def iterfilter(readings, discriminant):
     return iterative_filter(readings, len(readings), len(readings[0]), discriminant)
 
 if __name__ == '__main__':
+
+    assert(iterative_filter(intel_X, intel_N, intel_T, reciprocal) == [19.42, 19.4102, 19.42])
+
+    assert(sensor_distance([1,2,3], [1,2,3]) == 0)
+    assert(sensor_distance([1,1,1,1], [0,0,0,0]) == 4)
+
+    assert(compute_d([[1,1,1,1]], [0,0,0,0]) == [1])
+    assert(compute_d([[1,1,1,1]], [1,1,1,1]) == [0])
+
     if len(sys.argv) == 1:
         data = 'datasets/intel-temp.csv'
     else:

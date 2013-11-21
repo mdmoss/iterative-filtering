@@ -7,7 +7,6 @@ import scipy.stats as stats
 
 from readings_generator import readings
 
-
 def delta(readings):
     """
         `readings` is a sensor-major array of sensor/time readings. `readings[s,t]` is the reading of
