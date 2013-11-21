@@ -50,9 +50,10 @@ def compute_d(readings, next_r):
 def compute_next_w(distances, readings, next_r, g):
     return [g(distances[i]) for i in range(len(distances))]
 
-def iterative_filter(x, n, t, g):
+def iterative_filter(x, n, t, g, w=None):
     l = 0
-    w = [[1] * n]
+    if w == None:
+        w = [[1] * n]
     r = [[]]
     converged = False
     while not converged:
@@ -76,8 +77,8 @@ def exponential(distance):
     return math.exp(distance * -1)
 
 
-def iterfilter(readings, discriminant):
-    return iterative_filter(readings, len(readings), len(readings[0]), discriminant)
+def iterfilter(readings, discriminant, weights=None):
+    return iterative_filter(readings, len(readings), len(readings[0]), discriminant, weights)
 
 if __name__ == '__main__':
 
