@@ -48,7 +48,9 @@ def variance_estimate(readings, biases):
     ])
 
     def constraint_function(v):
-        return sum(v) - constraint_value
+                                            #the below somehow reduces the bias. Leaving it out until
+                                            #it has some justification
+        return sum(v) - constraint_value    #*num_sensors/(num_sensors - 1)
 
     solution = optimize.fmin_slsqp(func=target_function,
                                    x0=[0] * num_sensors,
@@ -64,7 +66,7 @@ if __name__ == "__main__":
     variances = array([(num_sensors - sensor + 1) / 2 for sensor in range(num_sensors)])
     num_times = 10
     true_value = lambda t: (t - num_times / 2) ** 4
-    num_readings = 300
+    num_readings = 200
     reading_sampling = [readings_generator.readings(compensated_biases, variances, num_times, true_value) for i in
                         range(num_readings)]
     bias_estimates = array([bias_estimate(r) for r in reading_sampling])

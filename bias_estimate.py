@@ -56,7 +56,7 @@ if __name__ == "__main__":
     variances = array([1 + 0.1 * t for t in range(num_sensors)])
     true_value = lambda t: 1 + 3 * t
     num_times = 10
-    num_readings_samples = 100
+    num_readings_samples = 1000
     readings_samples = [readings(biases, variances, num_times, true_value) for i in range(num_readings_samples)]
     bias_estimates = array([v for v in map(bias_estimate, readings_samples)])
     alpha = 0.95
