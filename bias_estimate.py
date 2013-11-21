@@ -1,16 +1,16 @@
 #!/usr/bin/python
 
-import random
 import matplotlib.pyplot as pyplot
 from numpy import array, mean, vstack
 from scipy import optimize
-
 import scipy.stats as stats
+
+from readings_generator import readings
 
 
 def delta(readings):
     """
-        `readings` is a sensor-major matrix of sensor/time readings. `readings[s,t]` is the reading of
+        `readings` is a sensor-major array of sensor/time readings. `readings[s,t]` is the reading of
         sensor `s` at time `t`.
     """
     return array([
@@ -21,7 +21,7 @@ def delta(readings):
 
 def bias_estimate(readings):
     """
-        `readings` is a sensor-major matrix of sensor/time readings. `readings[s,t]` is the reading of
+        `readings` is a sensor-major array of sensor/time readings. `readings[s,t]` is the reading of
         sensor `s` at time `t`.
     """
     delta_matrix = delta(readings)
@@ -41,18 +41,6 @@ def bias_estimate(readings):
                                    f_eqcons=constraint_function,
                                    iprint=0)
     return solution
-
-
-def readings(biases, variances, num_times, true_value):
-    num_sensors = len(biases)
-    bias_compensator = -mean(biases)
-    compensated_biases = biases + bias_compensator * array([1] * len(biases))
-    return array([
-        [random.gauss(true_value(t) + compensated_biases[sensor],
-                      variances[sensor])
-         for t in range(num_times)]
-        for sensor in range(num_sensors)
-    ])
 
 
 if __name__ == "__main__":
