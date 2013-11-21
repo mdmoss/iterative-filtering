@@ -66,7 +66,6 @@ def iterative_filter(x, n, t, g, w=None):
         if [round(x, 4) for x in r[l]] == [round(y, 4) for y in r[l-1]]:
             converged = True
         l += 1;
-    print ('Filter completed in', l, 'rounds')
     return r[l]
 
 def reciprocal(distance):
