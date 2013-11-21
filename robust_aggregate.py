@@ -16,7 +16,8 @@ def estimate(readings, discriminant):
     first_variance_est = variance_estimate(readings, first_bias_est)
     first_estimate = mle.estimate(readings, first_bias_est, first_variance_est)
 
-    filtering_result = iterfilter(readings, discriminant)
+    weights = mle.weight_vector(first_bias_est, first_variance_est)
+    filtering_result = iterfilter(readings, discriminant, weights)
     
     trustworthy_readings = collusion_detection.partition(readings, filtering_result)
 
@@ -41,3 +42,6 @@ if __name__ == '__main__':
 
     readings = readings_generator.readings(biases, variances, num_times, truth)
     print (rms_error(estimate(readings, reciprocal), [0] * num_sensors))
+
+    cramer_rao = 1 / sum([1 / v for v in variances])
+    print (cramer_rao)

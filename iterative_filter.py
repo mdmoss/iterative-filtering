@@ -54,6 +54,8 @@ def iterative_filter(x, n, t, g, w=None):
     l = 0
     if w == None:
         w = [[1] * n]
+    else:
+        w = [w]
     r = [[]]
     converged = False
     while not converged:
