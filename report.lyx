@@ -182,6 +182,14 @@ Iterative Filter Implementation
 \end_inset
 
 
+\begin_inset Formula 
+\[
+g(d)=d^{-k}
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -1017,6 +1025,92 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The error of the exponential estimator remains low until a certain bias
+ is reached, at which point its performance degrades to match the reciprocal
+ estimator.
+ This bias is determined by a multiplier on the exponential function.
+ This leads to the suggestion that, if the sensors were used in part of
+ a real world system where a theoretical maximum reading can be established,
+ and any readings above this point discarded, an exponential multiplier
+ could be chosen in such a way that it behaves in the desired way for any
+ possible readings.
+ This is only an idea, and we have not investigated this avenue further.
+\end_layout
+
+\begin_layout Standard
+To check the effects of using a larger multiplier with an exponentail discrimina
+nt, we used the equation:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+g(d)=e^{-0.01d}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Checking the result over a wide range of biases produces the following result.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename vary_bias_expo_big.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the results of our tests we've demonstrated the need for a more robust
+ estimator, in situations where no inferences can be made ahead of time
+ for the range of the input.
+\end_layout
+
+\begin_layout Section*
+RobustAggregate Implementation
+\end_layout
+
+\begin_layout Subsection*
+Bias and Variance Estiamtes
+\end_layout
+
+\begin_layout Standard
+<ed here plz>
+\end_layout
+
+\begin_layout Subsection*
+MLE and Collusion Detection
+\end_layout
+
+\begin_layout Standard
+Implementing MLE and collusion detection as described in the paper was fairly
+ straightforward.
+ 
+\end_layout
+
+\begin_layout Section*
+Testing and Comparison
 \end_layout
 
 \end_body
