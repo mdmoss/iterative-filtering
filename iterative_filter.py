@@ -41,6 +41,7 @@ def aggregate(instant_readings, weights):
 def compute_next_r(readings, weights):
     # matrix rotation
     instant_readings = [[x[i] for x in readings] for i in range(len(readings[0]))]
+    #print(weights)
     return [aggregate(r, weights) for r in instant_readings]
 
 def sensor_distance(sensor_readings, next_r):
