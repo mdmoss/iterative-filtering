@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from platform import system
 
 import sys
 import math
@@ -35,7 +36,7 @@ def aggregate(instant_readings, weights):
     top = sum([r * w for r, w in zip(instant_readings, weights)])
     bottom = sum(weights)
     if bottom == 0:
-        bottom = 0.0000001
+        return sys.maxsize
     return top / bottom
 
 def compute_next_r(readings, weights):
