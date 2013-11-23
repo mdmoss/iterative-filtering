@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     biases = [0] * 20
 
-    variance_max = 10
+    variance_max = 5
 
     x_values = []
     cramer_rao = []
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         def truth(t):
             return 0
 
-        cramer_rao += [1 / sum([1 / v for v in variances])]
+        cramer_rao += [math.sqrt(1 / sum([1 / v for v in variances]))]
 
         iter_recip = []
         iter_expo = []

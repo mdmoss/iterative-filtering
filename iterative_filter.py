@@ -34,6 +34,8 @@ def aggregate(instant_readings, weights):
     # dot product
     top = sum([r * w for r, w in zip(instant_readings, weights)])
     bottom = sum(weights)
+    if bottom == 0:
+        bottom = 0.0000001
     return top / bottom
 
 def compute_next_r(readings, weights):
