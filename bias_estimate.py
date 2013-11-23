@@ -28,7 +28,7 @@ def bias_estimate(readings):
 
     def target_function(b):
         return sum([
-            sum([((b[sensor1] - b[sensor2]) / delta_matrix[sensor1, sensor2] - 1) ** 2 for sensor2 in range(sensor1)])
+            sum([(b[sensor1] - b[sensor2] - delta_matrix[sensor1, sensor2]) ** 2 for sensor2 in range(sensor1)])
             for sensor1 in range(len(readings))
         ])
 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     variances = array([1 + 0.1 * t for t in range(num_sensors)])
     true_value = lambda t: 1 + 3 * t
     num_times = 10
-    num_readings_samples = 1000
+    num_readings_samples = 50
     readings_samples = [readings(biases, variances, num_times, true_value) for i in range(num_readings_samples)]
     bias_estimates = array([v for v in map(bias_estimate, readings_samples)])
     alpha = 0.95

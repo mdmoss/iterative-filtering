@@ -33,7 +33,7 @@ def variance_estimate(readings, biases):
 
     def target_function(v):
         return sum([
-            sum([((v[sensor1] + v[sensor2]) / beta_matrix[sensor1, sensor2] - 1) ** 2
+            sum([(v[sensor1] + v[sensor2] - beta_matrix[sensor1, sensor2]) ** 2
                  for sensor2 in range(sensor1)
             ])
             for sensor1 in range(num_sensors)
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     variances = array([(num_sensors - sensor + 1) / 2 for sensor in range(num_sensors)])
     num_times = 10
     true_value = lambda t: (t - num_times / 2) ** 4
-    num_readings = 200
+    num_readings = 50
     reading_sampling = [readings_generator.readings(compensated_biases, variances, num_times, true_value) for i in
                         range(num_readings)]
     bias_estimates = array([bias_estimate(r) for r in reading_sampling])
