@@ -36,5 +36,5 @@ if __name__ == '__main__':
 
     mvs = [bayes_mvs(t) for t in time_errors]
 
-    pp.errorbar(range(times), [m[0][0] for m in mvs], yerr=[m[0][0]-m[1][0] for m in mvs])
+    pp.errorbar(range(times), [m[0][0] for m in mvs], yerr=[m[0][0]-m[0][1][0] for m in mvs])
     pp.show()

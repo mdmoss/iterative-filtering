@@ -16,7 +16,7 @@ def rms_error(estimates, truths):
     return math.sqrt(sum([(e - t)**2 for (e, t) in zip(estimates, truths)]) / len(estimates))
 
 if __name__ == '__main__':
-    repeats = 1000
+    repeats = 100
     variance = 1
     bias = 0
     truth = 0
@@ -45,6 +45,5 @@ if __name__ == '__main__':
     iter_mvs = bayes_mvs(iter_rms_errors)
     mle_mvs = bayes_mvs(mle_rms_errors)
 
-
-    pp.bar([0, 1], [iter_mvs[0][0], mle_mvs[0][0]], yerr=[iter_mvs[0][0]-iter_mvs[1][0], mle_mvs[0][0]-mle_mvs[1][0]])
+    pp.bar([0, 1], [iter_mvs[0][0], mle_mvs[0][0]], yerr=[iter_mvs[0][0]-iter_mvs[0][1][0], mle_mvs[0][0]-mle_mvs[0][1][0]])
     pp.show()
