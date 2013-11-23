@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import random
 from numpy import array, vstack, mean, concatenate
 from bias_estimate import bias_estimate
