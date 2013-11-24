@@ -90,20 +90,19 @@ def linear_solution_variance_estimate(readings, biases):
         for sensor in range(num_sensors)
     ])
 
-    target_vector = [sum([beta_matrix[k, i] for i in range(num_sensors)]) for k in range(num_sensors)] + [
-        constraint_value]
+    target_vector = [sum([beta_matrix[k, i] for i in range(num_sensors)])
+                     for k in range(num_sensors)] + [constraint_value]
+
     def diagonal(i, j):
         if i == j:
             return num_sensors + 1
         else:
             return 1
-    matrix = [
-        [
-            diagonal(i, j)
-            for j in range(num_sensors)
-        ] + [1]
-        for i in range(num_sensors)
-    ] + [[1] * num_sensors + [0]]
+
+    matrix = [[diagonal(i, j)
+               for j in range(num_sensors)] + [1]
+              for i in range(num_sensors)] + \
+             [[1] * num_sensors + [0]]
 
     return solve(matrix, target_vector)[:num_sensors]
 
@@ -119,7 +118,8 @@ if __name__ == "__main__":
     reading_sampling = [readings_generator.readings(compensated_biases, variances, num_times, true_value) for i in
                         range(num_readings)]
     bias_estimates = array([linear_solution_bias_estimate(r) for r in reading_sampling])
-    variance_estimates = array([linear_solution_variance_estimate(r, b) for r, b in zip(reading_sampling, bias_estimates)])
+    variance_estimates = array(
+        [linear_solution_variance_estimate(r, b) for r, b in zip(reading_sampling, bias_estimates)])
     alpha = 0.95
     #variance_estimates[i,s] gives the estimate of sensor s in reading i.
     #variance_estimates.transpose()[s, i] gives the same.
