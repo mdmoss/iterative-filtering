@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as pyplot
 from numpy import array, mean, vstack
+from numpy.dual import solve
 from scipy import optimize
 import scipy.stats as stats
 
@@ -19,6 +20,7 @@ def delta(readings):
 
 
 def bias_estimate(readings):
+    return linear_solution_bias_estimate(readings)
     """
         `readings` is a sensor-major array of sensor/time readings. `readings[s,t]` is the reading of
         sensor `s` at time `t`.
@@ -42,6 +44,26 @@ def bias_estimate(readings):
     return solution
 
 
+def linear_solution_bias_estimate(readings):
+    delta_matrix = delta(readings)
+    num_sensors = len(delta_matrix)
+    target_vector = [sum([delta_matrix[k, i] for i in range(num_sensors) if i != k]) for k in range(num_sensors)] + [0]
+    def diagonal(i, j):
+        if i == j:
+            return num_sensors - 1
+        else:
+            return - 1
+    matrix = [
+        [
+            diagonal(i, j)
+            for i in range(num_sensors)
+        ] + [1]
+        for j in range(num_sensors)
+    ] + [[1] * num_sensors + [0]]
+    return solve(matrix, target_vector)[:num_sensors]
+
+
+
 if __name__ == "__main__":
     num_sensors = 20
     num_t1_sensors = 15
@@ -55,7 +77,7 @@ if __name__ == "__main__":
     variances = array([1 + 0.1 * t for t in range(num_sensors)])
     true_value = lambda t: 1 + 3 * t
     num_times = 10
-    num_readings_samples = 50
+    num_readings_samples = 500
     readings_samples = [readings(biases, variances, num_times, true_value) for i in range(num_readings_samples)]
     bias_estimates = array([v for v in map(bias_estimate, readings_samples)])
     alpha = 0.95
