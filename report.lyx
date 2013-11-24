@@ -1106,11 +1106,134 @@ MLE and Collusion Detection
 \begin_layout Standard
 Implementing MLE and collusion detection as described in the paper was fairly
  straightforward.
- 
+ We used a p-value of 0.5 or greater as the cut off for acceptance of the
+ null hypothesis for collusion detection.
+ Sensors were revoked by removing them from the dataset, and rerunning the
+ bias and variance detection, as well as the MLE.
 \end_layout
 
 \begin_layout Section*
 Testing and Comparison
+\end_layout
+
+\begin_layout Standard
+As with many implementations, it was not straightforward to test our filter.
+ Although we have the results from the literature, recreating them has proved
+ difficult.
+ Some of our results are less than satisfactory, suggesting there may be
+ a source of error we haven't considered.
+ Here's our performance using our changed reciprocal discriminant from above,
+ running on a dataset without colluders.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename robust_agg_recip.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Exponential Discriminant
+\end_layout
+
+\begin_layout Standard
+One of our questions initially was why the equation wasn't tested with an
+ exponential discriminant, which wasn't discussed in the paper.
+ We ran the test using the exponential discriminant, and found that its
+ behavior is slightly less accurate than a reciprocal discriminant, but
+ still seems acceptable, even where iterative filtering with an exponential
+ discriminant breaks down.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename robust_agg_expo.svg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Robustness
+\end_layout
+
+\begin_layout Standard
+We ran our robust aggregate implementation using both reciprocal and exponential
+ discriminants against the same data type as iterative filtering, with 30
+ sensors including 10 colluders.
+ When we used a large number of time samples (
+\begin_inset Formula $t=400)$
+\end_inset
+
+, we saw encouraging results similar to those described in the paper.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename rms_many_times.svg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When we switched to a dataset similar to the original intel datasets, however,
+ the error was greatly increased.
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \end_body

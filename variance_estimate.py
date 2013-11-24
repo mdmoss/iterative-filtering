@@ -92,6 +92,6 @@ if __name__ == "__main__":
     axes.legend(['True', 'Estimated - Mean'])
     #axes.set_ylim(ymax=3)
     axes.set_xlabel('Sensor ID')
-    axes.set_ylabel('Bias')
+    axes.set_ylabel('Variance')
 
     pyplot.show()

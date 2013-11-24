@@ -34,15 +34,14 @@ def rms_error(estimates, truths):
     return math.sqrt(sum([(e - t)**2 for (e, t) in zip(estimates, truths)]) / len(estimates))
 
 if __name__ == '__main__':
-
-    repeats = 10
+    repeats = 100
 
     num_sensors = 20
-    num_times = 100
+    num_times = 18
 
     biases = [0] * 20
 
-    variance_max = 5
+    variance_max = 10
 
     x_values = []
     cramer_rao = []
@@ -74,29 +73,29 @@ if __name__ == '__main__':
         for i in range(repeats):
             print (i)
             readings = readings_generator.readings(biases, variances, num_times, truth)
-            iter_recip += [rms_error(iterfilter(readings, reciprocal), [0]*num_sensors)]
+            #iter_recip += [rms_error(iterfilter(readings, reciprocal), [0]*num_sensors)]
             iter_expo += [rms_error(iterfilter(readings, exponential), [0]*num_sensors)]
-            robust_agg_recip += [rms_error(estimate(readings, reciprocal), [0]*num_sensors)]
+            #robust_agg_recip += [rms_error(estimate(readings, reciprocal), [0]*num_sensors)]
             robust_agg_expo += [rms_error(estimate(readings, exponential), [0]*num_sensors)]
 
-        iter_recip_mean = bayes_mvs(iter_recip)[0]
+        #iter_recip_mean = bayes_mvs(iter_recip)[0]
         iter_expo_mean = bayes_mvs(iter_expo)[0]
-        robust_agg_recip_mean = bayes_mvs(robust_agg_recip)[0]
+        #robust_agg_recip_mean = bayes_mvs(robust_agg_recip)[0]
         robust_agg_expo_mean = bayes_mvs(robust_agg_expo)[0]
 
-        iter_recip_means += [iter_recip_mean[0]]
+        #iter_recip_means += [iter_recip_mean[0]]
         iter_expo_means += [iter_expo_mean[0]]
-        robust_agg_recip_means += [robust_agg_recip_mean[0]]
+        #robust_agg_recip_means += [robust_agg_recip_mean[0]]
         robust_agg_expo_means += [robust_agg_expo_mean[0]]
 
-        iter_recip_errors += [iter_recip_mean[0] - iter_recip_mean[1][0]]
+        #iter_recip_errors += [iter_recip_mean[0] - iter_recip_mean[1][0]]
         iter_expo_errors += [iter_expo_mean[0] - iter_expo_mean[1][0]]
-        robust_agg_recip_errors += [robust_agg_recip_mean[0] - robust_agg_recip_mean[1][0]]
+        #robust_agg_recip_errors += [robust_agg_recip_mean[0] - robust_agg_recip_mean[1][0]]
         robust_agg_expo_errors += [robust_agg_expo_mean[0] - robust_agg_expo_mean[1][0]]
 
-    pp.errorbar(x_values, iter_recip_means, yerr=iter_recip_errors, label='Iterative Filtering - reciprocal')
+    #pp.errorbar(x_values, iter_recip_means, yerr=iter_recip_errors, label='Iterative Filtering - reciprocal')
     pp.errorbar(x_values, iter_expo_means, yerr=iter_expo_errors, label='Iterative Filtering - exponential')
-    pp.errorbar(x_values, robust_agg_recip_means, yerr=robust_agg_recip_errors, label='Robust Aggregate - reciprocal')
+    #pp.errorbar(x_values, robust_agg_recip_means, yerr=robust_agg_recip_errors, label='Robust Aggregate - reciprocal')
     pp.errorbar(x_values, robust_agg_expo_means, yerr=robust_agg_expo_errors, label='Robust Aggregate - exponential')
     pp.errorbar(x_values, cramer_rao, label='Cramer-Rao Bound')
     
