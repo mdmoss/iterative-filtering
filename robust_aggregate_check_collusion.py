@@ -41,11 +41,11 @@ def test_iterfilter(num_honest, num_skewing, num_avg, num_times, repetitions, ra
     return (recip_rms_bayes[0], expo_rms_bayes[0])
 
 if __name__ == '__main__':
-    sensors = 20
-    colluders = 4
+    sensors = 10
+    colluders = 3
     repeats = 100
-    max_averagers = 4
-    times = 2
+    max_averagers = 3
+    times = 3
     seed = round(random.random(), 6)
 
     values = []

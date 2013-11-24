@@ -847,6 +847,7 @@ I was interested by the final aggregate value for the exponential discriminant
 \end_layout
 
 \begin_layout Standard
+h
 \begin_inset Float figure
 wide false
 sideways false
@@ -1173,6 +1174,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename robust_agg_expo.svg
+	width 100text%
 
 \end_inset
 
@@ -1212,13 +1214,10 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename rms_many_times.svg
+	width 100text%
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -1233,6 +1232,27 @@ When we switched to a dataset similar to the original intel datasets, however,
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename robust_agg_few_times.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
