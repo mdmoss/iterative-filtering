@@ -67,6 +67,20 @@ def readings_ks_attack(legitimate_readings,
     final_colluder_value = [v + _noise() for v in mle_estimate]
     return vstack((array(readings_with_colluders), array(final_colluder_value)))
 
+def readings_revised_ks_attack(legitimate_readings,
+                               true_value,
+                               num_colluders, colluder_bias):
+    def estimate(readings):
+        return robust_aggregate.estimate(readings, robust_aggregate.exponential)
+
+    readings_with_colluders = legitimate_readings
+    for iteration in range(1, num_colluders + 1):
+        colluder_value = [v + colluder_bias/num_colluders + _noise() for v in estimate(readings_with_colluders)]
+        #print("iteration: {}.\n array:\n{}".format(iteration,array(readings_with_colluders)))
+        #print("colluder value:\n{}".format(array([colluder_value])))
+        readings_with_colluders = legitimate_readings.tolist() + ([colluder_value] * iteration)
+    return readings_with_colluders
+
 
 if __name__ == "__main__":
     num_legitimate_sensors = 15

@@ -1,5 +1,5 @@
 from matplotlib import pyplot
-from attacks import readings_ks_attack, readings_simple_attack, readings_sophisticated_attack
+from attacks import readings_ks_attack, readings_simple_attack, readings_sophisticated_attack, readings_revised_ks_attack
 from scipy.stats import bayes_mvs
 from iterative_filter import exponential
 import readings_generator
@@ -10,7 +10,7 @@ __author__ = 'Edward'
 
 if __name__ == "__main__":
     total_sensors = 20
-    max_num_colluders = 10
+    max_num_colluders = 5
     num_times = 5
     true_value = lambda t: t
     biases = [0] * total_sensors
@@ -31,6 +31,7 @@ if __name__ == "__main__":
     num_iterations_per_attack_size = 100
 
     def rmse_ci(attack, num_colluders):
+        print("{} colluders under attack {}".format(num_colluders, attack))
         rms_errors = [attack_rmse(attack, num_colluders) for i in range(num_iterations_per_attack_size)]
         mean_ci, variance_ci, stddev_ci = bayes_mvs(rms_errors)
         return mean_ci
@@ -47,13 +48,13 @@ if __name__ == "__main__":
 
     simple, sophisticated, ks = (cis_to_pyplot_bounds(cis_over_num_colluders(attack))
                                  for attack in
-                                 (readings_simple_attack, readings_sophisticated_attack, readings_ks_attack))
+                                 (readings_simple_attack, readings_sophisticated_attack, readings_revised_ks_attack))
 
     fig = pyplot.figure()
     axes = fig.add_subplot(1, 1, 1)
     axes.set_title('RMS Error under Attacks')
     for centers, bounds in (simple, sophisticated, ks):
-        axes.errorbar(range(2, max_num_colluders), centers, yerr=bounds)
+        axes.errorbar(range(2, max_num_colluders + 1), centers, yerr=bounds)
     axes.legend(['Simple', 'Sophisticated', 'SK'])
     axes.set_xlabel('Number of colluding sensors')
     axes.set_ylabel('RMS Error')
