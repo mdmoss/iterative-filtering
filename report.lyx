@@ -1460,8 +1460,116 @@ Idea - KS Attack
 \end_layout
 
 \begin_layout Standard
-Ed writing here.
- What is it? How does it work? Might it work?
+The performance analysis in the original paper showed a very strong performance
+ increase when using the KS collusion detector.
+ We considered two methods of trying to `crack' the system with collusion
+ detection, however since our implementation doesn't demonstrate the same
+ sensitivity and accuracy as that claimed in the paper, we include it here
+ mostly for theoretical interest.
+\end_layout
+
+\begin_layout Standard
+The KS attack is similar in spirit to the sophisticated averaging attack
+ in the original paper, but using knowledge the attacker has about how the
+ results will be aggregated.
+ Let 
+\begin_inset Formula $X_{0}=\left[x_{s}^{t}\right]_{s,t}=\left[\mathbf{x}_{s}\right]_{s}$
+\end_inset
+
+ be the legitimate sensor readings and let 
+\begin_inset Formula $R\left(X\right)$
+\end_inset
+
+ be the aggregate value estimate of the true values given sensor readings
+ 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ We propose iteratively adding 
+\begin_inset Formula $N_{C}$
+\end_inset
+
+ colluding sensor readings 
+\begin_inset Formula $\mathbf{c}_{1},\dots,\mathbf{c}_{N_{C}}$
+\end_inset
+
+ as follows.
+\end_layout
+
+\begin_layout Standard
+First, we set 
+\begin_inset Formula $\mathbf{c}_{1}=R\left(X_{0}\right)+\mathbf{b}$
+\end_inset
+
+, where 
+\begin_inset Formula $\mathbf{b}$
+\end_inset
+
+ is a bias vector.
+ Now consider 
+\begin_inset Formula $R\left(X_{1}\right)$
+\end_inset
+
+, where 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ equals 
+\begin_inset Formula $X_{0}$
+\end_inset
+
+ appended with 
+\begin_inset Formula $\mathbf{c}_{1}$
+\end_inset
+
+.
+ If there are many legitimate sensors, 
+\begin_inset Formula $R\left(X_{0}\right)$
+\end_inset
+
+ will approximately equal 
+\begin_inset Formula $R\left(X_{1}\right)$
+\end_inset
+
+, and if 
+\begin_inset Formula $\mathbf{b}$
+\end_inset
+
+ is small enough, 
+\begin_inset Formula $\mathbf{c}_{1}$
+\end_inset
+
+ will have a high initial weighting and will be able to shift 
+\begin_inset Formula $R\left(X_{0}\right)$
+\end_inset
+
+ in the direction of 
+\begin_inset Formula $\mathbf{b}$
+\end_inset
+
+ slightly.
+\end_layout
+
+\begin_layout Standard
+We repeat this process: 
+\begin_inset Formula $\mathbf{c}_{i+1}=R\left(X_{i}\right)+\mathbf{b}$
+\end_inset
+
+, 
+\begin_inset Formula $X_{i+1}=\left[X_{i},\mathbf{c}_{i+1}\right]$
+\end_inset
+
+, up to 
+\begin_inset Formula $\mathbf{c}_{N_{C}-1}$
+\end_inset
+
+.
+ For our last colluder, we set 
+\begin_inset Formula $\mathbf{c}_{N_{C}}=R\left(X_{N_{C}-1}\right)$
+\end_inset
+
+ to ensure a maximal weighting.
 \end_layout
 
 \begin_layout Subsection*
