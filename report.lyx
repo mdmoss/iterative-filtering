@@ -1259,7 +1259,53 @@ Collusion Detection
 \begin_layout Standard
 We were unable to reproduce the effectiveness of the collusion detection
  system described in the paper.
- 
+ We performed a simple validation on whether Scipy's KS-test implementation
+ was correct, which narrowed down potential points of failure to our own
+ implementation.
+\end_layout
+
+\begin_layout Standard
+In the figure below, we plot the density of the regularized errors of some
+ of the sensors in a sophisticated collusion attack.
+ As can be seen, although the final averaging colluder has a somewhat more
+ heavy-tailed distribution, it is not significantly deviant from an 
+\begin_inset Formula $N\left(0,1\right)$
+\end_inset
+
+ distribution.
+ The KS-test 
+\begin_inset Formula $p$
+\end_inset
+
+-value of 0.90 for the final colluder reiterates this.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename collusion_detection_regularisation_failure.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section*
