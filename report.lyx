@@ -1442,13 +1442,19 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+We can ascribe this to the smaller number of time samples per sensor in
+ the Intel data: even with the complicated interlacing of biases and variances
+ used in the estimators, we can't ignore the lower amount of information
+ per sensor that we have in the latter situation.
+ This would cause a higher error in our estimates of bias and variance,
+ which may in turn make the robust aggregation method more unpredictable,
+ with higher error.
 \end_layout
 
 \end_body
