@@ -5,7 +5,7 @@ __author__ = 'Pierzchalski'
 from numpy import array, mean, vstack
 from scipy import optimize, stats
 import readings_generator
-from bias_estimate import bias_estimate, linear_solution_bias_estimate
+from bias_estimate import linear_solution_bias_estimate
 import matplotlib.pyplot as pyplot
 
 
@@ -118,12 +118,12 @@ if __name__ == "__main__":
     reading_sampling = [readings_generator.readings(compensated_biases, variances, num_times, true_value) for i in
                         range(num_readings)]
     bias_estimates = array([linear_solution_bias_estimate(r) for r in reading_sampling])
-    variance_estimates = array(
+    variance_estimates_with_estimated_biases = array(
         [linear_solution_variance_estimate(r, b) for r, b in zip(reading_sampling, bias_estimates)])
     alpha = 0.95
     #variance_estimates[i,s] gives the estimate of sensor s in reading i.
     #variance_estimates.transpose()[s, i] gives the same.
-    variance_cis = [stats.bayes_mvs(v_est, alpha) for v_est in variance_estimates.transpose()]
+    variance_cis = [stats.bayes_mvs(v_est, alpha) for v_est in variance_estimates_with_estimated_biases.transpose()]
     v_mean_cis, v_var_cis, v_std_cis = zip(*variance_cis)
     v_mean_cntrs, v_mean_bounds = zip(*v_mean_cis)
     v_mean_lo, v_mean_hi = zip(*v_mean_bounds)
@@ -132,13 +132,31 @@ if __name__ == "__main__":
 
     fig = pyplot.figure()
     axes = fig.add_subplot(1, 1, 1)
-    axes.set_title('Variance Estimation')
+    axes.set_title('Variance Estimation (p={}, n={})'.format(alpha, num_readings))
     axes.plot(variances)
     axes.errorbar(range(num_sensors), v_mean_cntrs, vstack((v_mean_lo_diff, v_mean_hi_diff)))
 
-    axes.legend(['True', 'Estimated - Mean'])
+    reading_sampling = [readings_generator.readings(compensated_biases, variances, num_times, true_value) for i in
+                        range(num_readings)]
+    variance_estimates_with_true_biases = array(
+        [linear_solution_variance_estimate(r, compensated_biases) for r in reading_sampling])
+    alpha = 0.95
+    #variance_estimates[i,s] gives the estimate of sensor s in reading i.
+    #variance_estimates.transpose()[s, i] gives the same.
+    variance_cis = [stats.bayes_mvs(v_est, alpha) for v_est in variance_estimates_with_true_biases.transpose()]
+    v_mean_cis, v_var_cis, v_std_cis = zip(*variance_cis)
+    v_mean_cntrs, v_mean_bounds = zip(*v_mean_cis)
+    v_mean_lo, v_mean_hi = zip(*v_mean_bounds)
+    v_mean_lo_diff = array(v_mean_cntrs) - array(v_mean_lo)
+    v_mean_hi_diff = array(v_mean_hi) - array(v_mean_cntrs)
+    axes.errorbar(range(num_sensors), v_mean_cntrs, vstack((v_mean_lo_diff, v_mean_hi_diff)))
+
+    axes.legend(['True', 'With Estimated Biases', 'With True Biases'])
     #axes.set_ylim(ymax=3)
     axes.set_xlabel('Sensor ID')
-    axes.set_ylabel('Bias')
+    axes.set_ylabel('Estimate')
+
+    # Actually save the figure
+    pyplot.savefig('./variance_estimator_bias_figure.png')
 
     pyplot.show()
