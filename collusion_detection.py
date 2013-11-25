@@ -33,7 +33,7 @@ def find_colluders(readings, estimates, alpha=0.05):
     normalized_errors = [sensor_normalized_errors(s) for s in range(num_sensors)]
     ks_results = [(index, kstest(x, 'norm')[1]) for index, x in zip(range(num_sensors), normalized_errors)]
     colluders = [index for index, test in ks_results if test < alpha]
-    return colluders, ks_results
+    return colluders, ks_results, normalized_errors
 
 
 def partition(readings, estimates):

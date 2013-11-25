@@ -5,6 +5,7 @@ from iterative_filter import iterfilter, exponential
 import mle
 import readings_generator
 from variance_estimate import variance_estimate
+import matplotlib.pyplot as pyplot
 
 __author__ = 'Pierzchalski'
 
@@ -31,4 +32,37 @@ if __name__ == "__main__":
                                                                           num_colluders,
                                                                           colluder_bias)
     estimates = robust_first_estimate(sophisticated_attack_readings)
-    colluders, ks_results = find_colluders(sophisticated_attack_readings, estimates)
+    colluders, ks_results, regularised_errors = find_colluders(sophisticated_attack_readings, estimates)
+    print(ks_results)
+
+    fig = pyplot.figure()
+
+    axes = fig.add_subplot(2, 2, 1)
+    axes.set_title('Legitimate Sensor')
+    axes.hist(regularised_errors[0], bins=20)
+    axes.set_ylim(ymax=150)
+    axes.set_xlim(xmin=-4, xmax=4)
+
+    axes = fig.add_subplot(2, 2, 2)
+    axes.set_title('Legitimate Sensor')
+    axes.hist(regularised_errors[1], bins=20)
+    axes.set_ylim(ymax=150)
+    axes.set_xlim(xmin=-4, xmax=4)
+
+
+    axes = fig.add_subplot(2, 2, 3)
+    axes.set_title('Simple Colluder')
+    axes.hist(regularised_errors[21], bins=20)
+    axes.set_ylim(ymax=150)
+    axes.set_xlim(xmin=-4, xmax=4)
+
+
+    axes = fig.add_subplot(2, 2, 4)
+    axes.set_title('Averaging Colluder')
+    axes.hist(regularised_errors[22], bins=20)
+    axes.set_ylim(ymax=150)
+    axes.set_xlim(xmin=-4, xmax=4)
+
+
+    pyplot.savefig('./collusion_detection_regularisation_failure.png')
+    pyplot.show()

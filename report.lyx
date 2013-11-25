@@ -1252,6 +1252,16 @@ Implementing MLE and collusion detection as described in the paper was fairly
  bias and variance detection, as well as the MLE.
 \end_layout
 
+\begin_layout Subsection*
+Collusion Detection
+\end_layout
+
+\begin_layout Standard
+We were unable to reproduce the effectiveness of the collusion detection
+ system described in the paper.
+ 
+\end_layout
+
 \begin_layout Section*
 Testing and Comparison
 \end_layout
