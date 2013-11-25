@@ -1463,9 +1463,9 @@ Idea - KS Attack
 The performance analysis in the original paper showed a very strong performance
  increase when using the KS collusion detector.
  We considered two methods of trying to `crack' the system with collusion
- detection, however since our implementation doesn't demonstrate the same
- sensitivity and accuracy as that claimed in the paper, we include it here
- mostly for theoretical interest.
+ detection, however since our collusion detection implementation doesn't
+ demonstrate the same sensitivity and accuracy as that claimed in the original
+ paper, we include it here mostly for theoretical interest.
 \end_layout
 
 \begin_layout Standard
