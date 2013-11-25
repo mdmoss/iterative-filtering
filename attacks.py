@@ -53,7 +53,7 @@ def readings_ks_attack(legitimate_readings,
     """
 
     def estimate(readings):
-        return robust_aggregate.estimate(readings, robust_aggregate.exponential)
+        return robust_aggregate.estimate(readings, robust_aggregate.reciprocal)
 
     b = colluder_bias #/ (num_colluders - 1)
     colluder_value = [v + b + _noise() for v in estimate(legitimate_readings)]
@@ -71,7 +71,7 @@ def readings_revised_ks_attack(legitimate_readings,
                                true_value,
                                num_colluders, colluder_bias):
     def estimate(readings):
-        return robust_aggregate.estimate(readings, robust_aggregate.exponential)
+        return robust_aggregate.estimate(readings, robust_aggregate.reciprocal)
 
     readings_with_colluders = legitimate_readings
     for iteration in range(1, num_colluders + 1):

@@ -8,6 +8,7 @@ from scipy import optimize, stats
 import readings_generator
 from bias_estimate import linear_solution_bias_estimate
 import matplotlib.pyplot as pyplot
+from numpy.linalg import solve
 
 
 def variance_estimate(readings, biases):

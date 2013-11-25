@@ -7,6 +7,9 @@ from iterative_filter import exponential, reciprocal
 import readings_generator
 from robust_aggregate import rms_error
 import robust_aggregate
+import mle
+from bias_estimate import bias_estimate
+from variance_estimate import variance_estimate
 
 __author__ = 'Edward'
 
@@ -19,16 +22,15 @@ if __name__ == "__main__":
     variances = [2] * total_sensors
     colluder_bias = 5
 
-
     def attack_rmse(attack, num_colluders):
         num_legit_sensors = total_sensors - num_colluders
         legitimate_readings = readings_generator.readings(biases[:num_legit_sensors], variances[:num_legit_sensors],
                                                           num_times, true_value)
-        return rms_error(robust_aggregate.estimate(attack(legitimate_readings,
-                                                          true_value,
-                                                          num_colluders,
-                                                          colluder_bias),
-                                                   reciprocal), [true_value(t) for t in range(num_times)])
+        attack_result = attack(legitimate_readings, true_value, num_colluders, colluder_bias)
+        est_bias = bias_estimate(attack_result)
+        est_var = variance_estimate(attack_result, est_bias)
+
+        return rms_error(mle.estimate(attack_result, est_bias, est_var), [true_value(t) for t in range(num_times)])
 
     num_iterations_per_attack_size = 100
 
@@ -54,7 +56,7 @@ if __name__ == "__main__":
 
     fig = pyplot.figure()
     axes = fig.add_subplot(1, 1, 1)
-    axes.set_title('RMS Error under Attacks')
+    axes.set_title('RMS Error under Attacks - MLE')
     for centers, bounds in (simple, sophisticated, ks):
         axes.errorbar(range(2, max_num_colluders + 1), centers, yerr=bounds)
     axes.legend(['Simple', 'Sophisticated', 'SK'])
