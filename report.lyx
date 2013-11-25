@@ -66,15 +66,15 @@ Exploring RobustAggregate Iterative Filtering
 \end_layout
 
 \begin_layout Author
-Matthew Moss
+Matthew Moss and Edward Pierzchalski
 \end_layout
 
 \begin_layout Standard
 This report documents my exploration of the RobustAggregate iterative filtering
  technique presented by [Rezvani, Ignjatovic, Bertino, Jha 2013].
- My aim is to identify any weaknesses in the original algorithm and attempt
+ Our aim is to identify any weaknesses in the original algorithm and attempt
  to rectify these.
- I've seen convincing demonstrations of the algorithm, so I'm not expecting
+ We've seen convincing demonstrations of the algorithm, so we're not expecting
  this to be a straightforward exercise.
 \end_layout
 
@@ -83,11 +83,11 @@ Iterative Filtering Implementation
 \end_layout
 
 \begin_layout Standard
-I started by implementing the core iterative filtering algorithm from [Kerchove,
- Dooren 2010] to verify that is behaves as expected under both normal circumstan
-ces, and when collusion attacks are present.
- I used the language python because its fairly familiar to me, and has several
- useful maths and statistics libraries.
+We started by implementing the core iterative filtering algorithm from [Kerchove
+, Dooren 2010] to verify that is behaves as expected under both normal circumsta
+nces, and when collusion attacks are present.
+ We used the language python because its fairly familiar to us, and has
+ several useful maths and statistics libraries.
 \end_layout
 
 \begin_layout Subsection*
@@ -95,13 +95,13 @@ Implementation Issues
 \end_layout
 
 \begin_layout Standard
-During implementation, I also encountered the issues described in class
+During implementation, we also encountered the issues described in class
  because of the possible division by zero when using a reciprocal discriminant
  function.
  Unfortunately, no mention of how to circumvent this is made in the literature,
  and the execution trace given uses the reciprocal function.
- To verify my implementation against the literature values (to gain some
- measure of confidence it is correct) I had to improvise a change to the
+ To verify our implementation against the literature values (to gain some
+ measure of confidence it is correct) we had to improvise a change to the
  function.
 \end_layout
 
@@ -145,10 +145,10 @@ return d**(-1)
 
 \end_deeper
 \begin_layout Standard
-I also had some issues with convergence in my trial runs.
- Often the naive algorithm would never converge, due to (I suspect) minute
+We also had some issues with convergence in our trial runs.
+ Often the naive algorithm would never converge, due to (we suspect) minute
  floating point errors.
- I corrected these by rounding the reputation vector to four decimal places
+ We corrected these by rounding the reputation vector to four decimal places
  before checking for convergence.
 \end_layout
 
@@ -157,7 +157,7 @@ Results
 \end_layout
 
 \begin_layout Standard
-Using my implementation, I was able to replicate the trace given in Table
+Using our implementation, we were able to replicate the trace given in Table
  2.1 of [RIBJ 2013].
  There were several small differences, most likely due to the differing
  implementation of the reciprocal function used, but the final result is
@@ -463,17 +463,13 @@ exponential
 
 \end_layout
 
-\begin_layout Standard
-<analysis of relative error here if time>
-\end_layout
-
 \begin_layout Section*
 Demonstration of Attacks
 \end_layout
 
 \begin_layout Standard
-To confirm that the iterative filter I've implemented has the same behavior
- as the literature examples, I've used the same attack against it as in
+To confirm that the iterative filter we've implemented has the same behavior
+ as the literature examples, we've used the same attack against it as in
  the paper.
  First, the simple collusion attack from Table 2.2.
 \end_layout
@@ -641,8 +637,8 @@ exponential
 \begin_layout Standard
 There are several possible explanations for the differences between the
  literature values and experimental results for the reciprocal filter.
- It's possible I have a difference in my implementation, thanks either to
- human error or a platform issue.
+ It's possible we have a difference in my implementation, thanks either
+ to human error or a platform issue.
  It's also possible that using 
 \begin_inset Formula $sys.maxsize$
 \end_inset
@@ -652,12 +648,12 @@ There are several possible explanations for the differences between the
 \end_inset
 
  case in the reciprocal changes the result.
- As it does converge to a similar value, however, I think it's acceptable
+ As it does converge to a similar value, however, we think it's acceptable
  to use in further testing.
 \end_layout
 
 \begin_layout Standard
-I also tried the sophisticated collusion attack, which had the following
+We also tried the sophisticated collusion attack, which had the following
  results.
 \end_layout
 
@@ -829,12 +825,12 @@ exponential
 \end_layout
 
 \begin_layout Standard
-I was interested by the final aggregate value for the exponential discriminant
- iterative filter, because it seemed to skew less than I'd expect, hearing
+We were interested by the final aggregate value for the exponential discriminant
+ iterative filter, because it seemed to skew less than we'd expect, hearing
  about the weaknesses of the algorithm.
- I wrote a tester to explore attacks against the iterative filtering algorithm
+ We wrote a tester to explore attacks against the iterative filtering algorithm
  more thoroughly.
- To start, I measured the error of 1000 datasets similar to the intel example,
+ To start, we measured the error of 1000 datasets similar to the intel example,
  with a single averaging colluder and a varying number of others skewing
  the data.
  The genuine readings were taken from a normal distribution around 0 with
@@ -855,7 +851,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/home/mdm/rms_by_number_of_colluding_sensors.svg
+	filename rms_by_number_of_colluding_sensors.svg
 	width 100text%
 
 \end_inset
@@ -877,7 +873,7 @@ It seems the behavior from the Intel example is fairly typical, with the
 \end_layout
 
 \begin_layout Standard
-To establish if the patterns for breakdown were typical, I repeated the
+To establish if the patterns for breakdown were typical, we repeated the
  experiment with 30 sensors and between 1 and 30 colluders.
 \end_layout
 
@@ -889,7 +885,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/home/mdm/30_sensors.svg
+	filename 30_sensors.svg
 	width 100text%
 
 \end_inset
@@ -905,10 +901,10 @@ status open
 \begin_layout Standard
 From these results, it seems that 10 colluders out of 30 sensors is close
  to the limit where the algorithm begins to fail.
- I'm going to use that ratio to explore how the other parameters affect
+ We're going to use that ratio to explore how the other parameters affect
  the outome.
- First, I checked how the number of time samples used in the algorithm affects
- the accuracy of the result.
+ First, we checked how the number of time samples used in the algorithm
+ affects the accuracy of the result.
 \end_layout
 
 \begin_layout Standard
@@ -919,7 +915,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/home/mdm/vary_times.svg
+	filename vary_times.svg
 	width 100text%
 
 \end_inset
@@ -935,7 +931,7 @@ status open
 \begin_layout Standard
 The number of time samples used seems to have fairly little effect on the
  accuracy.
- I also varied the number of colluders reporting an average, to see the
+ We also varied the number of colluders reporting an average, to see the
  effect on the results.
  Keep in mind that every colluder reporting an average is one less to report
  a more extreme value, hence the trustworthiness of the averagers decreases
@@ -950,7 +946,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/home/mdm/vary_averaging_colluders.svg
+	filename vary_averaging_colluders.svg
 	width 100text%
 
 \end_inset
@@ -968,7 +964,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-Finally, I varied the value of the final colluding sensor, specifically
+Finally, we varied the value of the final colluding sensor, specifically
  to see if it had any effect on the exponential function's results.
 \end_layout
 
@@ -980,7 +976,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/home/mdm/vary_avg.svg
+	filename vary_avg.svg
 	width 100text%
 
 \end_inset
@@ -999,7 +995,7 @@ I'm interested by how robust using an exponential discriminant seems to
  The estimate seems to vary a lot less than the reciprocal.
  At this stage, it seemed that using the exponential function prevented
  the attacks demonstrated in the original paper.
- To find the point where it breaks down, I ran a test with 10 sensors including
+ To find the point where it breaks down, we ran a test with 10 sensors including
  3 colluders, varying the bias of the colluder's measurements.
 \end_layout
 
@@ -1231,6 +1227,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename variance_estimator_bias_figure.png
+	width 100text%
 
 \end_inset
 
