@@ -855,7 +855,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/mdm/rms_by_number_of_colluding_sensors.svg
+	filename C:/home/mdm/rms_by_number_of_colluding_sensors.svg
 	width 100text%
 
 \end_inset
@@ -889,7 +889,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/mdm/30_sensors.svg
+	filename C:/home/mdm/30_sensors.svg
 	width 100text%
 
 \end_inset
@@ -919,7 +919,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/mdm/vary_times.svg
+	filename C:/home/mdm/vary_times.svg
 	width 100text%
 
 \end_inset
@@ -950,7 +950,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/mdm/vary_averaging_colluders.svg
+	filename C:/home/mdm/vary_averaging_colluders.svg
 	width 100text%
 
 \end_inset
@@ -980,7 +980,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/mdm/vary_avg.svg
+	filename C:/home/mdm/vary_avg.svg
 	width 100text%
 
 \end_inset
@@ -1093,11 +1093,133 @@ RobustAggregate Implementation
 \end_layout
 
 \begin_layout Subsection*
-Bias and Variance Estiamtes
+Bias and Variance Estimates
 \end_layout
 
 \begin_layout Standard
-<ed here plz>
+Originally, we used Scipy's numerical optimization libraries to directly
+ find bias and variance estimates that minimize the target functions outlined
+ in the original paper.
+ Unfortunately, the robust versions often encountered division by zero under
+ degenerate data, and so we opted to use the simpler versions.
+ Due to performance reasons, we migrated to the method of solving for the
+ estimate vector such that the gradient is the zero-vector: since this is
+ a simple linear problem, we can use faster libraries to find a solution.
+\end_layout
+
+\begin_layout Standard
+An iteresting point arises when we look at the derivation of the variance
+ estimator.
+ In equation (3.4) of the paper, we have that 
+\begin_inset Formula $\hat{x}_{s}^{t}$
+\end_inset
+
+ is defined to be 
+\begin_inset Formula $x_{s}^{t}-b_{s}$
+\end_inset
+
+, and so if 
+\begin_inset Formula $x_{s}^{t}\sim N\left(r_{t}+b_{s},v_{s}\right)$
+\end_inset
+
+ then 
+\begin_inset Formula $\hat{x}_{s}^{t}\sim N\left(r_{t},v_{s}\right)$
+\end_inset
+
+.
+ However, on page 15 of the paper, it is stated that the readings 
+\begin_inset Formula $\hat{x}_{s}^{t}$
+\end_inset
+
+ are unbiased, and thus that 
+\begin_inset Formula $\mathbb{E}\left[\left(\hat{x}_{s}^{t}\right)^{2}\right]=v_{s}$
+\end_inset
+
+.
+ However, this is clearly not true: 
+\begin_inset Formula $\hat{x}_{s}^{t}$
+\end_inset
+
+ is `de-biased' with respect to
+\emph on
+ 
+\emph default
+the sensor bias, not the true value, and so 
+\begin_inset Formula $\mathbb{E}\left[\left(\hat{x}_{s}^{t}\right)^{2}\right]=v_{s}+r_{t}^{2}$
+\end_inset
+
+.
+ Fortunately, this error is `cancelled out' when expanding 
+\begin_inset Formula $\mathbb{E}\left[\hat{x}_{s}^{t}-\bar{x}^{t}\right]$
+\end_inset
+
+, and the final result is unchanged.
+\end_layout
+
+\begin_layout Standard
+Since we apply the variance estimator in situations where the bias is unknown,
+ we also note that this undercuts the assumption that leads to unbiasedness
+ of the variance estimator.
+ If the variance of 
+\begin_inset Formula $b_{s}$
+\end_inset
+
+ is zero (i.e.
+ it is an 
+\emph on
+a priori
+\emph default
+ known value), then indeed 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\hat{x}_{s}^{t}\sim N\left(r_{t},v_{s}\right)$
+\end_inset
+
+.
+ However, if we have estimated 
+\begin_inset Formula $b_{s}$
+\end_inset
+
+, then our estimate comes with some variance around the true value.
+ For simplicity, let the true value of the bias be 
+\begin_inset Formula $\beta_{s}$
+\end_inset
+
+, and let our estimate 
+\begin_inset Formula $b_{s}\sim N\left(\beta_{s},\sigma_{\beta s}^{2}\right)$
+\end_inset
+
+.
+ Then 
+\begin_inset Formula $\hat{x}_{s}^{t}\sim N\left(r_{t},v_{s}+\sigma_{\beta s}^{2}\right)$
+\end_inset
+
+, and so our final estimate is for the sum of all variances, 
+\family default
+\series default
+\shape default
+\size default
+\emph on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+plus the variances of our bias estimator
+\emph default
+ and is itself biased.
+ We confirm this with generated data in [figure].
 \end_layout
 
 \begin_layout Subsection*
