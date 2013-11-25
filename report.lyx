@@ -1405,5 +1405,86 @@ status open
 
 \end_layout
 
+\begin_layout Section*
+Attacks
+\end_layout
+
+\begin_layout Subsection*
+Idea - KS Attack
+\end_layout
+
+\begin_layout Standard
+Ed writing here.
+ What is it? How does it work? Might it work?
+\end_layout
+
+\begin_layout Subsection*
+Analysis
+\end_layout
+
+\begin_layout Standard
+We tested the resilience of the algorithm running on a dataset of 20 sensors,
+ with up to five colluders, under several attack scenarios.
+ We replicated methods of the simple and sophisticated attacks from the
+ earlier experiments, and added an attack using foreknowledge of the algorithm.
+ The attack attempted to use iterative the MLE and iterative filtering process
+ to estimate the outcome from the trustworthy sensors, and adjust the colluders
+ so they would seem like non-colluders in the ks test.
+ We had varying success with this method, as the variance and bias estimation
+ seems effective at finding colluders early.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename attack_resilience_robust_agg.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We also ran another simulation, using inputs generated the same way, to
+ measure the performance of just the MLE using the bias and variance estimators.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename attack_resilience_mle.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
