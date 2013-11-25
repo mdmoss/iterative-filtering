@@ -66,7 +66,7 @@ Exploring RobustAggregate Iterative Filtering
 \end_layout
 
 \begin_layout Author
-Matthew Moss and Edward Pierzchalski
+Matthew Moss (mdm, z3376173) and Edward Pierzchalski (eapi714, z3379830)
 \end_layout
 
 \begin_layout Standard
@@ -830,9 +830,9 @@ We were interested by the final aggregate value for the exponential discriminant
  about the weaknesses of the algorithm.
  We wrote a tester to explore attacks against the iterative filtering algorithm
  more thoroughly.
- To start, we measured the error of 1000 datasets similar to the intel example,
- with a single averaging colluder and a varying number of others skewing
- the data.
+ To start, we measured the error of 1000 data sets similar to the Intel
+ example, with a single averaging colluder and a varying number of others
+ skewing the data.
  The genuine readings were taken from a normal distribution around 0 with
  variance 1.
  The colluding sensors each reported a value with a bias of 
@@ -902,7 +902,7 @@ status open
 From these results, it seems that 10 colluders out of 30 sensors is close
  to the limit where the algorithm begins to fail.
  We're going to use that ratio to explore how the other parameters affect
- the outome.
+ the outcome.
  First, we checked how the number of time samples used in the algorithm
  affects the accuracy of the result.
 \end_layout
@@ -1038,7 +1038,7 @@ The error of the exponential estimator remains low until a certain bias
 \end_layout
 
 \begin_layout Standard
-To check the effects of using a larger multiplier with an exponentail discrimina
+To check the effects of using a larger multiplier with an exponential discrimina
 nt, we used the equation:
 \end_layout
 
@@ -1118,6 +1118,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename bias_estimation_unbiasedness.png
+	width 100text%
 
 \end_inset
 
@@ -1330,6 +1331,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename collusion_detection_regularisation_failure.png
+	width 100text%
 
 \end_inset
 
@@ -1356,7 +1358,7 @@ As with many implementations, it was not straightforward to test our filter.
  Some of our results are less than satisfactory, suggesting there may be
  a source of error we haven't considered.
  Here's our performance using our changed reciprocal discriminant from above,
- running on a dataset without colluders.
+ running on a data set without colluders.
 \end_layout
 
 \begin_layout Standard
@@ -1459,7 +1461,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-When we switched to a dataset similar to the original Intel datasets, however,
+When we switched to a dataset similar to the original Intel data sets, however,
  the error was greatly increased.
 \end_layout
 
@@ -1479,15 +1481,13 @@ status open
 
 \end_layout
 
-\end_inset
-
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
-We might explain this increase in error and variance of error by noting
- that our estimators for bias and variance both become less accurate when
- there are fewer samples per sensor, as is the case in the Intel datasets.
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section*
@@ -1670,13 +1670,29 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection*
+As an optimisation problem
+\end_layout
+
+\begin_layout Standard
+If we had greater computing resources, it would be interesting to treat
+ attacking this algorithm as an optimization problem.
+ Technically, this is not difficult, but as we were not certain of the correctne
+ss of our final implementation we prioritised exploring it instead.
+ The dimensionality of the problem highly limits optimization, as the estimator
+ takes a non-negliable amount of time to run, and a system with 20 sensors
+ at 100 times produces a 
+\begin_inset Formula $20x100=2000$
+\end_inset
+
+ dimension optimisation problem.
+ This is mitigated by the fact that only a single demonstrable attack strategy
+ needs to be found, but it was still too big a hurdle for us to overcome.
 \end_layout
 
 \begin_layout Section*
@@ -1686,8 +1702,8 @@ Conclusion
 \begin_layout Standard
 The RobustAggregate algorithm, for the attacks we attempted, seems to be
  more robust against collusion attacks that regular iterative filtering.
- This doesn't hold, however, when datasets with a small number of time slices
- are used.
+ This doesn't hold, however, when data sets with a small number of time
+ slices are used.
  The bias and variance estimators gain accuracy with every time sample as
  they operate only on a single sensor.
  If not enough data is present for them to run satisfactorily, then the

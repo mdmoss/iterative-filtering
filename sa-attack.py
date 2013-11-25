@@ -22,13 +22,13 @@ if __name__ == '__main__':
     honest_readings = readings_generator.readings(honest_biases, honest_variances, num_times, lambda t: truth).tolist()
 
     num_influenced = 5
-    influenced_value = 10000
+    influenced_value = 1000
 
-    influenced_readings = num_influenced * [[influenced_value] * num_times]
+    influenced_readings = num_influenced * [[truth] * (num_times - 1) + [influenced_value]]
 
     readings = honest_readings + influenced_readings
 
     estimates = robust_aggregate.estimate(readings, robust_aggregate.reciprocal)
-    error = rms_error(estimates, [truth] * len(readings))
+    error = rms_error(estimates, [truth] * len(readings)) / len(readings)
 
     print (error)
