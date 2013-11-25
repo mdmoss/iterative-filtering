@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from numpy.linalg import solve
 
 __author__ = 'Pierzchalski'
 
