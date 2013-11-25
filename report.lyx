@@ -70,7 +70,7 @@ Matthew Moss and Edward Pierzchalski
 \end_layout
 
 \begin_layout Standard
-This report documents my exploration of the RobustAggregate iterative filtering
+This report documents our exploration of the RobustAggregate iterative filtering
  technique presented by [Rezvani, Ignjatovic, Bertino, Jha 2013].
  Our aim is to identify any weaknesses in the original algorithm and attempt
  to rectify these.
@@ -84,9 +84,9 @@ Iterative Filtering Implementation
 
 \begin_layout Standard
 We started by implementing the core iterative filtering algorithm from [Kerchove
-, Dooren 2010] to verify that is behaves as expected under both normal circumsta
-nces, and when collusion attacks are present.
- We used the language python because its fairly familiar to us, and has
+, Dooren 2010] to verify that this behaves as expected under both normal
+ circumstances, and when collusion attacks are present.
+ We used the Python language because its fairly familiar to us, and has
  several useful maths and statistics libraries.
 \end_layout
 
@@ -1459,7 +1459,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-When we switched to a dataset similar to the original intel datasets, however,
+When we switched to a dataset similar to the original Intel datasets, however,
  the error was greatly increased.
 \end_layout
 
@@ -1479,13 +1479,15 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+We might explain this increase in error and variance of error by noting
+ that our estimators for bias and variance both become less accurate when
+ there are fewer samples per sensor, as is the case in the Intel datasets.
 \end_layout
 
 \begin_layout Section*
