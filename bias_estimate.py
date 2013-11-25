@@ -77,7 +77,7 @@ if __name__ == "__main__":
     variances = array([1 + 0.1 * t for t in range(num_sensors)])
     true_value = lambda t: 1 + 3 * t
     num_times = 10
-    num_readings_samples = 500
+    num_readings_samples = 1000
     readings_samples = [readings(biases, variances, num_times, true_value) for i in range(num_readings_samples)]
     bias_estimates = array([v for v in map(bias_estimate, readings_samples)])
     alpha = 0.95
@@ -93,15 +93,16 @@ if __name__ == "__main__":
 
     fig = pyplot.figure()
     axes = fig.add_subplot(1, 1, 1)
-    axes.set_title('Bias Estimation')
+    axes.set_title('Bias Estimation (p={}, n={})'.format(alpha, num_readings_samples))
     axes.plot(compensated_biases)
 
     axes.errorbar(range(num_sensors), means, vstack((mean_lower_bounds, mean_upper_bounds)))
-    axes.errorbar(range(num_sensors), stddev, vstack((stddev_lower_bounds, stddev_upper_bounds)))
+    #axes.errorbar(range(num_sensors), stddev, vstack((stddev_lower_bounds, stddev_upper_bounds)))
 
-    axes.legend(['True', 'Estimated - Mean', 'Estimated - Standard Deviation'])
+    axes.legend(['True', 'Estimated'])
     axes.set_ylim(ymax=3)
     axes.set_xlabel('Sensor ID')
     axes.set_ylabel('Bias')
 
+    pyplot.savefig('./bias_estimation_unbiasedness.png')
     pyplot.show()

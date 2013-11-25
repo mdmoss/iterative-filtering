@@ -1104,6 +1104,36 @@ Originally, we used Scipy's numerical optimization libraries to directly
 \end_layout
 
 \begin_layout Standard
+We successfully verified that the linear-constraint bias estimator is unbiased,
+ as theory would suggest.
+ A representative instance of this test is shown below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename bias_estimation_unbiasedness.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 An iteresting point arises when we look at the derivation of the variance
  estimator.
  In equation (3.4) of the paper, we have that 
