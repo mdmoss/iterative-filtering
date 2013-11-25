@@ -1219,7 +1219,27 @@ a priori
 plus the variances of our bias estimator
 \emph default
  and is itself biased.
- We confirm this with generated data in [figure].
+ We confirm this with generated data in the figure below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename variance_estimator_bias_figure.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
