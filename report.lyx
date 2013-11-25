@@ -1269,6 +1269,13 @@ status open
 
 \end_layout
 
+\begin_layout Standard
+An interesting and potentially useful direction for future investigation
+ might be how to `de-bias' the variance estimator.
+ The most straighforward would be to find a way of estimating the variance
+ of the bias estimates used, however this is beyond the scope of our project.
+\end_layout
+
 \begin_layout Subsection*
 MLE and Collusion Detection
 \end_layout
